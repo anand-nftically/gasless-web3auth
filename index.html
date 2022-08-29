@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body class="">
+    <div class="row justify-content-center align-self-center">
+        <div class="col-md-12 text-center">
+            <button type="button" name="" id="check" class="btn btn-primary float-center" btn-lg btn-block">Transact</button>
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.4.4.umd.min.js" type="application/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/web3auth@0.2.2/dist/web3auth.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter@0/dist/openloginAdapter.umd.min.js"></script>
+    <script src="mexa.js"></script>
+    <script src="NFTHelper.js"></script>
+    
+    <script>
+        
+        $('#check').click(function (e) { 
+            e.preventDefault();
+            const web3authSdk = window.Web3auth;
+            let web3AuthInstance = null;
+            web3AuthInstance = new web3authSdk.Web3Auth({
+                uiConfig: {
+                    // appLogo: "{{asset('images/nftically-n-logo.svg')}}",
+                    theme: "dark",
+                    loginMethodsOrder: ['facebook', 'google']
+                },
+                chainConfig: {
+                    chainNamespace: "eip155",
+                    chainId: "0x"+(80001).toString(16),
+                    rpcTarget: "https://rpc-mumbai.maticvigil.com/v1/ed1d8f3be6339832a88e7a42c1ed787ecb18e568"
+                },
+                clientId: "BOS5tLPrbMdFU_vBWhcYVC5zPkCkr3pFHroJBAqnwlJ5wakG3AZF4htVZvqMTN4dZKD5lwtNogoj6JepLBiaSwo"
+            });
+            let domainSignature = NFTHelper.getDomainSign("BOS5tLPrbMdFU_vBWhcYVC5zPkCkr3pFHroJBAqnwlJ5wakG3AZF4htVZvqMTN4dZKD5lwtNogoj6JepLBiaSwo","9467c39fe1aba91293a1cb5e422bc7295a041c9d4086de95b9dad6538abdb1eb",'https://gasless.test');
+            const openloginAdapter = new window.OpenloginAdapter.OpenloginAdapter({
+                adapterSettings: {
+                    clientId: "BOS5tLPrbMdFU_vBWhcYVC5zPkCkr3pFHroJBAqnwlJ5wakG3AZF4htVZvqMTN4dZKD5lwtNogoj6JepLBiaSwo",
+                    network: "testnet",
+                    uxMode: "popup",
+                    whiteLabel: {
+                        name: "NFTICALLY",
+                        // logoLight: "{{asset('images/nftically-n-logo.svg')}}",
+                        // logoDark: "{{asset('images/nftically-n-logo.svg')}}",
+                        defaultLanguage: "en",
+                        dark: false, // whether to enable dark mode. defaultValue: false
+                    },
+                    originData : {
+                        "https://gasless.test" : domainSignature
+                    }
+                },
+            });
+            web3AuthInstance.configureAdapter(openloginAdapter);
+            web3AuthInstance.initModal().then(() => {
+                web3AuthInstance.connect().then((web3authProvider) => {
+                    window.web3authProvider = web3AuthInstance;
+                    provider = new ethers.providers.Web3Provider(web3authProvider);
+                    window.signer = provider.getSigner();
+                    window.biconomy = new Biconomy(web3authProvider,{apiKey: '1qvakf7yZ.ccbdfb9e-4ffb-47ca-8d1a-b2cabed124ff', debug: true});
+                })
+            })
+        });
+    </script>
+  </body>
+</html>
