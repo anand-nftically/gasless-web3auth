@@ -132,7 +132,7 @@
             provider.send("eth_accounts", []).then((accounts) => {
                 try {
                     biconomy.getSignerByAddress(accounts[0])
-                    $('.logs').append("<h5 class'text-success'>Found biconomy.getSignerByAddress(address).</h5>");
+                    $('.logs').append("<h5 class='text-success'>Found biconomy.getSignerByAddress(address).</h5>");
                 }
                 catch (e) {
                     $('.logs').append("<h5 class='text-danger'>Can not found biconomy.getSignerByAddress(address).</h5>");
