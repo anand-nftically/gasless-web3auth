@@ -45,7 +45,7 @@
                 },
                 clientId: "BOS5tLPrbMdFU_vBWhcYVC5zPkCkr3pFHroJBAqnwlJ5wakG3AZF4htVZvqMTN4dZKD5lwtNogoj6JepLBiaSwo"
             });
-            let domainSignature = NFTHelper.getDomainSign("BOS5tLPrbMdFU_vBWhcYVC5zPkCkr3pFHroJBAqnwlJ5wakG3AZF4htVZvqMTN4dZKD5lwtNogoj6JepLBiaSwo","9467c39fe1aba91293a1cb5e422bc7295a041c9d4086de95b9dad6538abdb1eb",'https://gasless.test');
+            // let domainSignature = NFTHelper.getDomainSign("BOS5tLPrbMdFU_vBWhcYVC5zPkCkr3pFHroJBAqnwlJ5wakG3AZF4htVZvqMTN4dZKD5lwtNogoj6JepLBiaSwo","9467c39fe1aba91293a1cb5e422bc7295a041c9d4086de95b9dad6538abdb1eb",'https://gasless.test');
             const openloginAdapter = new window.OpenloginAdapter.OpenloginAdapter({
                 adapterSettings: {
                     clientId: "BOS5tLPrbMdFU_vBWhcYVC5zPkCkr3pFHroJBAqnwlJ5wakG3AZF4htVZvqMTN4dZKD5lwtNogoj6JepLBiaSwo",
@@ -58,9 +58,9 @@
                         defaultLanguage: "en",
                         dark: false, // whether to enable dark mode. defaultValue: false
                     },
-                    originData : {
-                        "https://gasless.test" : domainSignature
-                    }
+                    // originData : {
+                    //     "https://gasless.test" : domainSignature
+                    // }
                 },
             });
             web3AuthInstance.configureAdapter(openloginAdapter);
